@@ -6,6 +6,7 @@ TagManager:
   tags:
   - YellowTeam
   - BlueTeam
+  - Spot
   layers:
   - Default
   - TransparentFX
