@@ -20,8 +20,8 @@ public class YellowAgent : Agent
     }
     private void Update()
     {
-        transform.position += _MySpeed * Time.deltaTime;
-        transform.forward = _MySpeed;
+        //transform.position += _MySpeed * Time.deltaTime;
+        //transform.forward = _MySpeed;
         LimitsFronts();
         CheckTeam();
         if(_manager._Time>0)
@@ -31,9 +31,11 @@ public class YellowAgent : Agent
                 YellowAgent objetoCercano = EncontrarObjetoMasCercano();
                 rend.material.color = Color.blue;
                 gameObject.tag = "Spot";
+                Persuit();
             }
             else
             {
+                Walk();
                 rend.material.color = Color.yellow;
                 TimeNotSpot();
                 gameObject.tag = "YellowTeam";
@@ -44,8 +46,14 @@ public class YellowAgent : Agent
         {
             MaxSpeed = 0;
         }
-
     }
+
+    public void Walk()
+    {
+        transform.position += _MySpeed * Time.deltaTime;
+        transform.forward = _MySpeed;
+    }
+
     public void MyForce(Vector3 force)
     {
         _MySpeed += force;
@@ -125,6 +133,30 @@ public class YellowAgent : Agent
     {
         transform.position = _manager.TransportPosition(transform.position);
     }
+
+    Vector3 Persuit()
+    {
+        Vector3 dir = transform.position;
+        dir.y = 1.124f;
+        Vector3 desired = Vector3.zero;
+        desired.Normalize();
+        desired *= _MySpeed.magnitude;
+
+        foreach (var agents in _teamAgents)
+        {
+            Vector3 distBoids = agents.transform.position - transform.position;
+            if (distBoids.magnitude <= viewRange)
+            {
+                Vector3 futurePos = agents.transform.position + _MySpeed * Time.deltaTime;
+                desired = futurePos - transform.position;
+                transform.position += desired.normalized * _MySpeed.magnitude * 1.5f * Time.deltaTime;
+                transform.forward = desired;
+            }
+        }
+
+        return SteeringCalculate(desired); //LAU, SI LEES ESTO FIJATE Y DESPUES BORRALO. No se si va con un .normalized o no, probalo y decidi, no me doy cuenta si es lo mismo o no
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.grey;
