@@ -24,18 +24,25 @@ public class YellowAgent : Agent
         transform.forward = _MySpeed;
         LimitsFronts();
         CheckTeam();
-        if(ImSpot==true)
+        if(_manager._Time>0)
         {
-            YellowAgent objetoCercano = EncontrarObjetoMasCercano();
-            rend.material.color = Color.blue;
-            gameObject.tag = "Spot";
+            if (ImSpot == true)
+            {
+                YellowAgent objetoCercano = EncontrarObjetoMasCercano();
+                rend.material.color = Color.blue;
+                gameObject.tag = "Spot";
+            }
+            else
+            {
+                rend.material.color = Color.yellow;
+                TimeNotSpot();
+                gameObject.tag = "YellowTeam";
+                MyForce(-Evade());
+            }
         }
-        else
+        else if(_manager._Time<=0)
         {
-            rend.material.color = Color.yellow;
-            TimeNotSpot();
-            gameObject.tag = "YellowTeam";
-            MyForce(-Evade());
+            MaxSpeed = 0;
         }
 
     }

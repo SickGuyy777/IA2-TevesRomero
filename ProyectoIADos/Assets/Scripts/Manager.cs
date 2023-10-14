@@ -28,13 +28,7 @@ public class Manager : MonoBehaviour
     }
     private void Update()
     {
-        _Time -= Time.deltaTime;
-        UITiempoRestante.text = "" + _Time.ToString("f1");
-        if(_Time<=0)
-        {
-            _Time=0;
-        }
-
+        ManageTimer();
     }
     public void ManageTimer()
     {
