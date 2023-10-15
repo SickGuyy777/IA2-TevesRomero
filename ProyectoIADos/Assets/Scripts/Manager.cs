@@ -45,7 +45,7 @@ public class Manager : MonoBehaviour
 
     //esto es para el puntaje mas alto siguen en proceso
     [ContextMenu ("crear tabla")]
-    public void registrotabla()
+    public void RegistroTabla()
     {
         for (int i = 0; i < 1; i++)
         {
@@ -54,7 +54,7 @@ public class Manager : MonoBehaviour
             ins.name = i.ToString();
         }
     }
-    [ContextMenu("pasar los datos a la pabla")]
+    [ContextMenu("pasar los datos a la tabla")]
     public void ShareData()
     {
         Agent jugadorConPuntajeMasAlto = EncontrarPuntajeMasAlto(agents);

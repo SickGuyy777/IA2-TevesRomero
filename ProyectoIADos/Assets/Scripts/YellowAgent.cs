@@ -20,6 +20,7 @@ public class YellowAgent : Agent
     }
     private void Update()
     {
+        //currentSpot = GameObject.FindGameObjectWithTag("Spot");
         LimitsFronts();
         CheckTeam();
         if(_manager._Time>0)
@@ -88,23 +89,35 @@ public class YellowAgent : Agent
             .FirstOrDefault();
         return objetoMasCercano;
     }
+
     public Vector3 Evade()
     {
-        Vector3 Desired = Vector3.zero;
-        foreach (var Hunter in _manager.agents)
+        Vector3 evade = Vector3.zero;
+        if (gameObject.tag == "YellowTeam")
         {
-            Vector3 DistAllHunters = Hunter.transform.position - transform.position;
-            if (Hunter == this)
+            GameObject[] spots = GameObject.FindGameObjectsWithTag("Spot");
+            GameObject closestSpot = null;
+            float closestDistance = float.MaxValue;
+    
+            foreach (GameObject spot in spots)
             {
-                continue;
+                float distance = Vector3.Distance(transform.position, spot.transform.position);
+                if (distance <= viewRange && distance < closestDistance)
+                {
+                    closestSpot = spot;
+                    closestDistance = distance;
+                }
             }
-            if (DistAllHunters.magnitude <= viewRange && gameObject.CompareTag("Spot"))
+    
+            if (closestSpot != null)
             {
-                Vector3 ProxPos = Hunter.transform.position + transform.position * Time.deltaTime;
-                Desired = ProxPos - transform.position;
+                Vector3 dir = closestSpot.transform.position - transform.position;
+                evade = new Vector3(-dir.y, -dir.x, 0).normalized;
+    
+                MyForce(evade * MaxSpeed * Time.deltaTime);
             }
         }
-        return SteeringCalculate(Desired);
+        return evade;
     }
 
     public void TimeNotSpot()
@@ -144,7 +157,7 @@ public class YellowAgent : Agent
         {
             Vector3 futurePos = objetoMasCercano.transform.position + _MySpeed * Time.deltaTime;
             desired = futurePos - transform.position;
-            transform.position += desired.normalized * _MySpeed.magnitude* MaxSpeed * Time.deltaTime;
+            transform.position += desired.normalized * _MySpeed.magnitude * MaxSpeed * Time.deltaTime;
             transform.forward = desired.normalized;
         }
         return SteeringCalculate(desired);

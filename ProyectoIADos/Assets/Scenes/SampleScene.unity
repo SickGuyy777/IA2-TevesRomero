@@ -433,7 +433,7 @@ MonoBehaviour:
   XLine: 46
   ZLine: 45
   UITiempoRestante: {fileID: 844854388}
-  _Time: 1
+  _Time: 60
   finalRange: {fileID: 1019545154}
   plantilla: {fileID: 3273989699034477079, guid: 8657f39203a69d449b9372dd21eca46c, type: 3}
 --- !u!4 &77994770
