@@ -9,6 +9,7 @@ public class Agent : MonoBehaviour
     public float MaxSpeed;
     public string agentName;
     public float viewRange;
+    public float rangeSpot;
     public float MaxForceRot;
     public bool ImSpot;
     [SerializeField] protected Manager _manager;

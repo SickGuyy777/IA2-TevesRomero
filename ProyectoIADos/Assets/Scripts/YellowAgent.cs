@@ -20,15 +20,13 @@ public class YellowAgent : Agent
     }
     private void Update()
     {
-        //transform.position += _MySpeed * Time.deltaTime;
-        //transform.forward = _MySpeed;
         LimitsFronts();
         CheckTeam();
         if(_manager._Time>0)
         {
             if (ImSpot == true)
             {
-                YellowAgent objetoCercano = EncontrarObjetoMasCercano();
+                Walk();
                 rend.material.color = Color.blue;
                 gameObject.tag = "Spot";
                 Persuit();
@@ -39,7 +37,7 @@ public class YellowAgent : Agent
                 rend.material.color = Color.yellow;
                 TimeNotSpot();
                 gameObject.tag = "YellowTeam";
-                MyForce(-Evade());
+                //MyForce(Evade());
             }
         }
         else if(_manager._Time<=0)
@@ -47,13 +45,13 @@ public class YellowAgent : Agent
             MaxSpeed = 0;
         }
     }
-
+    //no usa linq la region Movement
+    #region movement 
     public void Walk()
     {
         transform.position += _MySpeed * Time.deltaTime;
         transform.forward = _MySpeed;
     }
-
     public void MyForce(Vector3 force)
     {
         _MySpeed += force;
@@ -62,7 +60,16 @@ public class YellowAgent : Agent
             _MySpeed = _MySpeed.normalized * MaxSpeed;
         }
     }
-    void CheckTeam()
+    public Vector3 SteeringCalculate(Vector3 Desired)
+    {
+        return Vector3.ClampMagnitude(Desired.normalized * MaxSpeed - _MySpeed, MaxForceRot);
+    }
+    public void LimitsFronts()
+    {
+        transform.position = _manager.TransportPosition(transform.position);
+    }
+    #endregion
+    void CheckTeam()//IA2-LINQ
     {
         foreach (var item in _manager.agents)
         {
@@ -73,18 +80,13 @@ public class YellowAgent : Agent
         }
     }
 
-    YellowAgent EncontrarObjetoMasCercano()//linq calculo la posicion del NPC mas cercano 
+    YellowAgent EncontrarObjetoMasCercano()//IA2-LINQ la posicion del mas cercano
     {
         YellowAgent objetoMasCercano = FindObjectsOfType<YellowAgent>()
             .Where(objeto => objeto != this)
             .OrderBy(objeto => Vector3.Distance(transform.position, objeto.transform.position))
             .FirstOrDefault();
-
         return objetoMasCercano;
-    }
-    public Vector3 SteeringCalculate(Vector3 Desired)
-    {
-        return Vector3.ClampMagnitude(Desired.normalized * MaxSpeed - _MySpeed, MaxForceRot);
     }
     public Vector3 Evade()
     {
@@ -104,6 +106,7 @@ public class YellowAgent : Agent
         }
         return SteeringCalculate(Desired);
     }
+
     public void TimeNotSpot()
     {
         _Time += Time.deltaTime;
@@ -111,14 +114,16 @@ public class YellowAgent : Agent
     }
     //no usa linq la region de abajo
     #region cambio de papeles 
+
     private void CambiarPapeles(YellowAgent otroAgente)
     {
         ImSpot = false;
         otroAgente.ImSpot = true;
     }
+
     private void OnCollisionEnter(Collision collision)
     {
-        YellowAgent otroAgente = collision.collider.GetComponent<YellowAgent>();
+        YellowAgent otroAgente = collision.gameObject.GetComponent<YellowAgent>();
 
         if (otroAgente != null)
         {
@@ -128,39 +133,29 @@ public class YellowAgent : Agent
             }
         }
     }
-    #endregion   
-    public void LimitsFronts()
-    {
-        transform.position = _manager.TransportPosition(transform.position);
-    }
 
+    #endregion   
+ 
     Vector3 Persuit()
     {
-        Vector3 dir = transform.position;
-        dir.y = 1.124f;
         Vector3 desired = Vector3.zero;
-        desired.Normalize();
-        desired *= _MySpeed.magnitude;
-
-        foreach (var agents in _teamAgents)
+        YellowAgent objetoMasCercano = EncontrarObjetoMasCercano();//se que puedo poner este metodo dentro del persuit pero de esta forma tambien puedo chequear el gizmos que hice
+        if (objetoMasCercano != null)
         {
-            Vector3 distBoids = agents.transform.position - transform.position;
-            if (distBoids.magnitude <= viewRange)
-            {
-                Vector3 futurePos = agents.transform.position + _MySpeed * Time.deltaTime;
-                desired = futurePos - transform.position;
-                transform.position += desired.normalized * _MySpeed.magnitude * 1.5f * Time.deltaTime;
-                transform.forward = desired;
-            }
+            Vector3 futurePos = objetoMasCercano.transform.position + _MySpeed * Time.deltaTime;
+            desired = futurePos - transform.position;
+            transform.position += desired.normalized * _MySpeed.magnitude* MaxSpeed * Time.deltaTime;
+            transform.forward = desired.normalized;
         }
-
-        return SteeringCalculate(desired); //LAU, SI LEES ESTO FIJATE Y DESPUES BORRALO. No se si va con un .normalized o no, probalo y decidi, no me doy cuenta si es lo mismo o no
+        return SteeringCalculate(desired);
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.grey;
         Gizmos.DrawWireSphere(transform.position, viewRange);
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, rangeSpot);
         YellowAgent objetoMasCercano = EncontrarObjetoMasCercano();
         if (objetoMasCercano != null && ImSpot==true)
         {
@@ -168,6 +163,5 @@ public class YellowAgent : Agent
             Gizmos.DrawLine(transform.position, objetoMasCercano.transform.position);
             Gizmos.DrawSphere(objetoMasCercano.transform.position, 0.1f);
         }
-
     }
 }
