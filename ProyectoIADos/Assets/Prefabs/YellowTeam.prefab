@@ -203,6 +203,7 @@ MonoBehaviour:
   rangeSpot: 0.94
   MaxForceRot: 1
   ImSpot: 0
+  _MySpeed: {x: 0, y: 0, z: 0}
   _manager: {fileID: 0}
   _teamAgents: []
 --- !u!54 &1001609600651806757

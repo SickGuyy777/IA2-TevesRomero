@@ -5,7 +5,7 @@ using System.Linq;
 public class YellowAgent : Agent
 {
     private Renderer rend;
-    private Vector3 _MySpeed;
+
     private void Start()
     {
         Vector3 AleDir = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
@@ -38,7 +38,7 @@ public class YellowAgent : Agent
                 rend.material.color = Color.yellow;
                 TimeNotSpot();
                 gameObject.tag = "YellowTeam";
-                //MyForce(Evade());
+                MyForce(-Evade());
             }
         }
         else if(_manager._Time<=0)
@@ -90,36 +90,22 @@ public class YellowAgent : Agent
         return objetoMasCercano;
     }
 
-    public Vector3 Evade()
+    public Vector3 Evade() //IA2-LINQ aplico el persuit
     {
-        Vector3 evade = Vector3.zero;
-        if (gameObject.tag == "YellowTeam")
+        var desired = Vector3.zero;
+        var nearbySpots = _teamAgents
+            .Where(spot => spot != this && (spot.transform.position - transform.position).magnitude <= viewRange && spot.ImSpot)
+            .ToList();
+        if (nearbySpots.Count > 0)
         {
-            GameObject[] spots = GameObject.FindGameObjectsWithTag("Spot");
-            GameObject closestSpot = null;
-            float closestDistance = float.MaxValue;
-    
-            foreach (GameObject spot in spots)
-            {
-                float distance = Vector3.Distance(transform.position, spot.transform.position);
-                if (distance <= viewRange && distance < closestDistance)
-                {
-                    closestSpot = spot;
-                    closestDistance = distance;
-                }
-            }
-    
-            if (closestSpot != null)
-            {
-                Vector3 dir = closestSpot.transform.position - transform.position;
-                evade = new Vector3(-dir.y, -dir.x, 0).normalized;
-    
-                MyForce(evade * MaxSpeed * Time.deltaTime);
-            }
+            var closestSpot = nearbySpots
+                .OrderBy(spot => (spot.transform.position - transform.position).sqrMagnitude)
+                .First();
+            desired = (closestSpot.transform.position + closestSpot._MySpeed * Time.deltaTime) - transform.position;
         }
-        return evade;
-    }
 
+        return SteeringCalculate(desired);
+    }
     public void TimeNotSpot()
     {
         _Time += Time.deltaTime;
@@ -133,7 +119,7 @@ public class YellowAgent : Agent
         ImSpot = false;
         otroAgente.ImSpot = true;
     }
-
+    
     private void OnCollisionEnter(Collision collision)
     {
         YellowAgent otroAgente = collision.gameObject.GetComponent<YellowAgent>();

@@ -12,7 +12,7 @@ public class Agent : MonoBehaviour
     public float rangeSpot;
     public float MaxForceRot;
     public bool ImSpot;
-    //public GameObject currentSpot;
+    public Vector3 _MySpeed;
     [SerializeField] protected Manager _manager;
     [SerializeField] protected List<Agent> _teamAgents = new List<Agent>();
 }
