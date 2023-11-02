@@ -4,8 +4,6 @@ using UnityEngine;
 using System.Linq;
 public class YellowAgent : Agent
 {
-    private Renderer rend;
-
     private void Start()
     {
         Vector3 AleDir = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));

@@ -430,6 +430,12 @@ MonoBehaviour:
   - {fileID: 214837819}
   - {fileID: 63511480}
   - {fileID: 1549112771}
+  _agentsNames:
+  - {fileID: 409559376}
+  - {fileID: 1342247728}
+  - {fileID: 152174861}
+  - {fileID: 1765486898}
+  - {fileID: 175145718}
   XLine: 46
   ZLine: 45
   UITiempoRestante: {fileID: 844854388}
@@ -522,7 +528,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Angel
+  m_Text: x
 --- !u!222 &152174862
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -566,7 +572,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 132, y: -427.00006}
+  m_AnchoredPosition: {x: 132, y: -401.8}
   m_SizeDelta: {x: 1920, y: 381.918}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &175145718
@@ -602,7 +608,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Gollum
+  m_Text: x
 --- !u!222 &175145719
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -693,7 +699,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Destructor
+  m_Text: X
 --- !u!222 &409559377
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1460,7 +1466,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 132, y: -472}
+  m_AnchoredPosition: {x: 132, y: -456.4}
   m_SizeDelta: {x: 1920, y: 381.918}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1229317396
@@ -1576,7 +1582,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: The Mad
+  m_Text: x
 --- !u!222 &1342247729
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1907,7 +1913,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Almirant
+  m_Text: x
 --- !u!222 &1765486899
 CanvasRenderer:
   m_ObjectHideFlags: 0

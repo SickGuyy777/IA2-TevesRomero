@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class Agent : MonoBehaviour
 {
     public Text UITiempoRestante;
+    [HideInInspector] public Renderer rend;
     public float _Time = 60f;
     public float MaxSpeed;
     public string agentName;

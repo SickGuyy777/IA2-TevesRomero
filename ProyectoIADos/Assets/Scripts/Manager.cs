@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class Manager : MonoBehaviour
 {
     public Agent[] agents;
+    [SerializeField] Text[] _agentsNames;
     public float XLine;
     public float ZLine;
     public Text UITiempoRestante;
@@ -14,18 +15,26 @@ public class Manager : MonoBehaviour
     public Transform finalRange;
     public GameObject plantilla;
     private bool showTime = false;
+
+    int _textIndex;
+
     private void Start()
     {
-        var yellowAg = agents.Where(x => x is YellowAgent)
-                        .Select(x => x.agentName + " is Yellow"); //IA2-LINQ
+        var allAgents = agents.Select(x => x.agentName); //IA2-LINQ
+        var noSpotAgent = agents.Where(x => x.ImSpot = false); //IA2-LINQ
 
-        IEnumerable<T> Agents<T>(IEnumerable<T> col)
+        foreach (var item in noSpotAgent)
         {
-            foreach (var item in col)
-            {
-                yield return item;
-            }
+            item.rend.material.color = Color.yellow;
         }
+
+        foreach (var item in allAgents)
+        {
+            _agentsNames[_textIndex].text = item;
+            if(_textIndex < _agentsNames.Length) _textIndex++;
+            Debug.Log(item);
+        }
+
         int _spot =Random.Range(0, agents.Length);
         agents[_spot].ImSpot=true;
     }
