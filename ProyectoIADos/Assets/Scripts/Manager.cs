@@ -8,31 +8,33 @@ public class Manager : MonoBehaviour
 {
     public Agent[] agents;
     [SerializeField] Text[] _agentsNames;
+    [SerializeField] Text _cantFans;
     public float XLine;
     public float ZLine;
     public Text UITiempoRestante;
     public float _Time=60f;
     public Transform finalRange;
     public GameObject plantilla;
-    private bool showTime = false;
+    public List<FansManager> yellowFans, blueFans = new List<FansManager>();
 
+    bool _showTime = false;
     int _textIndex;
 
     private void Start()
     {
         var allAgents = agents.Select(x => x.agentName); //IA2-LINQ
         var noSpotAgent = agents.Where(x => x.ImSpot = false); //IA2-LINQ
+        var allFans = yellowFans.Concat(blueFans); //IA2-LINQ
+
+        _cantFans.text = "Attendance: " + allFans.Count();
 
         foreach (var item in noSpotAgent)
-        {
             item.rend.material.color = Color.yellow;
-        }
 
         foreach (var item in allAgents)
         {
             _agentsNames[_textIndex].text = item;
             if(_textIndex < _agentsNames.Length) _textIndex++;
-            Debug.Log(item);
         }
 
         int _spot =Random.Range(0, agents.Length);
@@ -45,11 +47,11 @@ public class Manager : MonoBehaviour
         {
             _Time = 0;
             finalRange.gameObject.SetActive(true);
-            if(!showTime)
+            if(!_showTime)
             {
                 registrotabla();
                 ShareData();
-                showTime = true;
+                _showTime = true;
             }
         }
     }
@@ -82,7 +84,7 @@ public class Manager : MonoBehaviour
 
     static Agent EncontrarPuntajeMasAlto(Agent[] jugadores)
     {
-        return jugadores.OrderByDescending(j => j._Time).First();
+        return jugadores.OrderByDescending(j => j._Time).First(); //IA2-LINQ
     }
 
     public Vector3 TransportPosition(Vector3 Actualposition)
