@@ -12,11 +12,11 @@ public class Manager : MonoBehaviour
     public float XLine;
     public float ZLine;
     public Text UITiempoRestante;
-    public float _Time=60f;
+    public float _Time = 60f;
     public Transform finalRange;
     public GameObject plantilla;
-    public List<FansManager> yellowFans, blueFans = new List<FansManager>();
-
+    public List<FansManager> yellowFans = new List<FansManager>();
+    public List<FansManager> blueFans = new List<FansManager>();
     bool _showTime = false;
     int _textIndex;
 
@@ -39,7 +39,12 @@ public class Manager : MonoBehaviour
 
         int _spot =Random.Range(0, agents.Length);
         agents[_spot].ImSpot=true;
+
+
+
+
     }
+
     private void Update()
     {
         ManageTimer();
