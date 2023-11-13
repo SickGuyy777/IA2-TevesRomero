@@ -10,6 +10,7 @@ public class FansManager : MonoBehaviour
     List<int> NumRifa = new List<int>();
     float _num;
     [SerializeField] GameObject lentes;
+
     private void Start()
     {
         _rend = GetComponent<Renderer>();
@@ -23,21 +24,40 @@ public class FansManager : MonoBehaviour
             case 1: 
                 _manager.yellowFans.Add(this);
                 _rend.material.color = Color.yellow;
+                for (int i = 0; i < 2; i++)
+                {
+                    int numeroAleatorio = Random.Range(1, 11); // Genera un número aleatorio entre 1 y 10
+                    NumRifa.Add(numeroAleatorio);
+                }
                 break;
             case 2:
                 _manager.blueFans.Add(this);
                 _rend.material.color = Color.blue;
+                for (int i = 0; i < 2; i++)
+                {
+                    int numeroAleatorio = Random.Range(1, 11); // Genera un número aleatorio entre 1 y 10
+                    NumRifa.Add(numeroAleatorio);
+                }
                 break;
         }
-        for (int i = 0; i < 2; i++)
-        {
-            int numeroAleatorio = Random.Range(1, 11); // Genera un número aleatorio entre 1 y 10
-            NumRifa.Add(numeroAleatorio);
-        }
+
         bool algunNumeroEsIgualA10 = NumRifa.Any(num => num == 10);// IA2-LINQ
         if (algunNumeroEsIgualA10)
         {
             lentes.SetActive(true);
         }
+
+        string abucheo = new object().GenerarAbucheo();
+
+        // Imprimimos el abucheo en la consola usando Debug.Log
+        Debug.Log(abucheo);
+
+
+
+
     }
+    
+    
+
+
 }
