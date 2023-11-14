@@ -8,7 +8,7 @@ public class Manager : MonoBehaviour
 {
     public Agent[] agents;
     [SerializeField] Text[] _agentsNames;
-    [SerializeField] Text _cantFans;
+    [SerializeField] Text _cantFans, _howIsTheDay;
     public float XLine;
     public float ZLine;
     public Text UITiempoRestante;
@@ -17,15 +17,27 @@ public class Manager : MonoBehaviour
     public GameObject plantilla;
     public List<FansManager> yellowFans = new List<FansManager>();
     public List<FansManager> blueFans = new List<FansManager>();
+
+    (string[] timeOfTheDay, string[] weather) weatherInGame; //IA2-LINQ
+
     bool _showTime = false;
     int _textIndex;
 
     private void Start()
     {
+        weatherInGame.timeOfTheDay = new string[] { "Morning", "Afternoon", "Evening", "Night" };
+        weatherInGame.weather = new string[] { "Sunny", "Cloudy", "Rainy", "Snowy" };
+
+        var day = weatherInGame.timeOfTheDay.Zip(weatherInGame.weather, (t, w) => t + ", " + w).ToList();//IA2-LINQ
         var allAgents = agents.Select(x => x.agentName); //IA2-LINQ
         var noSpotAgent = agents.Where(x => x.ImSpot = false); //IA2-LINQ
         var allFans = yellowFans.Concat(blueFans); //IA2-LINQ
 
+        if (day.Count > 0)
+        {
+            int randomIndex = Random.Range(0, day.Count);
+            _howIsTheDay.text = day[randomIndex];
+        }
         _cantFans.text = "Attendance: " + allFans.Count();
 
         foreach (var item in noSpotAgent)
@@ -39,14 +51,11 @@ public class Manager : MonoBehaviour
 
         int _spot =Random.Range(0, agents.Length);
         agents[_spot].ImSpot=true;
-
-
-
-
     }
 
     private void Update()
     {
+
         ManageTimer();
         if(_Time<=0)
         {
