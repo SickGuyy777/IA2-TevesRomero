@@ -18,7 +18,6 @@ public class YellowAgent : Agent
     }
     private void Update()
     {
-        //currentSpot = GameObject.FindGameObjectWithTag("Spot");
         LimitsFronts();
         CheckTeam();
         if(_manager._Time>0)

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-
+using TMPro;
 public class FansManager : MonoBehaviour
 {
     [SerializeField] Manager _manager;
@@ -10,7 +10,8 @@ public class FansManager : MonoBehaviour
     List<int> NumRifa = new List<int>();
     float _num;
     [SerializeField] GameObject lentes;
-
+    [SerializeField] TextMeshProUGUI _abucheo;
+    public bool Activo { get; set; } = true;//incompleto
     private void Start()
     {
         _rend = GetComponent<Renderer>();
@@ -28,6 +29,7 @@ public class FansManager : MonoBehaviour
                 {
                     int numeroAleatorio = Random.Range(1, 11); // Genera un número aleatorio entre 1 y 10
                     NumRifa.Add(numeroAleatorio);
+                    StartCoroutine(EjecutarCadaCincoSegundos());
                 }
                 break;
             case 2:
@@ -37,6 +39,7 @@ public class FansManager : MonoBehaviour
                 {
                     int numeroAleatorio = Random.Range(1, 11); // Genera un número aleatorio entre 1 y 10
                     NumRifa.Add(numeroAleatorio);
+                    StartCoroutine(EjecutarCadaCincoSegundos());
                 }
                 break;
         }
@@ -47,17 +50,17 @@ public class FansManager : MonoBehaviour
             lentes.SetActive(true);
         }
 
-        string abucheo = new object().GenerarAbucheo();
-
-        // Imprimimos el abucheo en la consola usando Debug.Log
-        Debug.Log(abucheo);
-
-
-
-
     }
-    
-    
+    IEnumerator EjecutarCadaCincoSegundos()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(5f);
+            string abucheo = new object().GenerarAbucheo();//IA2-LINQ
+            _abucheo.text = abucheo;
+        }
+    }
+
 
 
 }

@@ -63,6 +63,8 @@ public class Manager : MonoBehaviour
             finalRange.gameObject.SetActive(true);
             if(!_showTime)
             {
+
+                DeterminarGanador();
                 registrotabla();
                 ShareData();
                 _showTime = true;
@@ -91,8 +93,8 @@ public class Manager : MonoBehaviour
 
         for (int i = 0; i < 1; i++)
         {
-            finalRange.GetChild(i).GetChild(0).GetComponent<Text>().text = agents[i].name;
-            finalRange.GetChild(i).GetChild(1).GetComponent<Text>().text = agents[i]._Time.ToString();
+            finalRange.GetChild(i).GetChild(0).GetComponent<Text>().text = jugadorConPuntajeMasAlto.name;
+            finalRange.GetChild(i).GetChild(1).GetComponent<Text>().text = jugadorConPuntajeMasAlto._Time.ToString();
         }
     }
 
@@ -100,6 +102,44 @@ public class Manager : MonoBehaviour
     {
         return jugadores.OrderByDescending(j => j._Time).First(); //IA2-LINQ
     }
+
+
+    void DesactivarOtrosJugadores(Agent ganador)
+    {
+        foreach (var agente in agents.Except(new[] { ganador }))
+        {
+            agente.gameObject.SetActive(false); // Desactivar al jugador
+        }
+    }
+
+    void MostrarGanadorEnEscena(Agent ganador)
+    {
+        ganador.gameObject.SetActive(true); // Activar al jugador ganador
+    }
+
+    void DeterminarGanador()
+    {
+        var ganador = agents
+            .OrderByDescending(a => a._Time)
+            .Take(1)
+            .FirstOrDefault();
+
+        if (ganador != null)
+        {
+            DesactivarOtrosJugadores(ganador);
+            MostrarGanadorEnEscena(ganador);
+        }
+    }
+
+    void DesactivarFanaticos(Agent jugador)//incompleto
+    {
+        foreach (var fanatico in agents.SelectMany(j => j.Fanaticos).Except(jugador.Fanaticos))
+        {
+            // Desactivar fanático
+            fanatico.Activo = false;
+        }
+    }
+
 
     public Vector3 TransportPosition(Vector3 Actualposition)
     {
