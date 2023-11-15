@@ -17,6 +17,7 @@ public class Manager : MonoBehaviour
     public GameObject plantilla;
     public List<FansManager> yellowFans = new List<FansManager>();
     public List<FansManager> blueFans = new List<FansManager>();
+    [SerializeField] List<GameObject> _borders = new List<GameObject>();
 
     (string[] timeOfTheDay, string[] weather) weatherInGame; //IA2-LINQ
 
@@ -28,10 +29,16 @@ public class Manager : MonoBehaviour
         weatherInGame.timeOfTheDay = new string[] { "Morning", "Afternoon", "Evening", "Night" };
         weatherInGame.weather = new string[] { "Sunny", "Cloudy", "Rainy", "Snowy" };
 
+        var border = _borders.SelectMany(border => border.GetComponentsInChildren<Renderer>()).ToList();//IA2-LINQ
         var day = weatherInGame.timeOfTheDay.Zip(weatherInGame.weather, (t, w) => t + ", " + w).ToList();//IA2-LINQ
         var allAgents = agents.Select(x => x.agentName); //IA2-LINQ
         var noSpotAgent = agents.Where(x => x.ImSpot = false); //IA2-LINQ
         var allFans = yellowFans.Concat(blueFans); //IA2-LINQ
+
+        foreach (var item in border)
+        {
+            item.material.color = Color.red;
+        }
 
         if (day.Count > 0)
         {
