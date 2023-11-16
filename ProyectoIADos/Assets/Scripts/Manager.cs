@@ -31,7 +31,7 @@ public class Manager : MonoBehaviour
 
         var border = _borders.SelectMany(border => border.GetComponentsInChildren<Renderer>()).ToList();//IA2-LINQ
         var day = weatherInGame.timeOfTheDay.Zip(weatherInGame.weather, (t, w) => t + ", " + w).ToList();//IA2-LINQ
-        var allAgents = agents.Select(x => x.agentName); //IA2-LINQ
+        var allAgents = agents.OfType<YellowAgent>().Select(x => x.agentName); //IA2-LINQ
         var noSpotAgent = agents.Where(x => x.ImSpot = false); //IA2-LINQ
         var allFans = yellowFans.Concat(blueFans); //IA2-LINQ
 
