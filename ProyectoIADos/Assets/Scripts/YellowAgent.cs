@@ -67,6 +67,12 @@ public class YellowAgent : Agent
         transform.position = _manager.TransportPosition(transform.position);
     }
     #endregion
+    public void DesactivarTodosLosFans()//IA2-LINQ 
+    {
+        ListaDeFans.SelectMany(fan => fan.GetComponentsInChildren<FansManager>(true))
+            .ToList()
+            .ForEach(fan => fan.gameObject.SetActive(false));
+    }
     void CheckTeam()//IA2-LINQ
     {
         foreach (var item in _manager.agents)

@@ -196,6 +196,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UITiempoRestante: {fileID: 0}
+  rend: {fileID: 0}
   _Time: 60
   MaxSpeed: 0
   agentName: 
@@ -206,6 +207,7 @@ MonoBehaviour:
   _MySpeed: {x: 0, y: 0, z: 0}
   _manager: {fileID: 0}
   _teamAgents: []
+  yo: {fileID: 8266788328835427784}
 --- !u!54 &1001609600651806757
 Rigidbody:
   m_ObjectHideFlags: 0

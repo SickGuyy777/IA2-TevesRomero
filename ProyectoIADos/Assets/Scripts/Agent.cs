@@ -18,5 +18,6 @@ public class Agent : MonoBehaviour
     public Vector3 _MySpeed;
     [SerializeField] protected Manager _manager;
     [SerializeField] protected List<Agent> _teamAgents = new List<Agent>();
-    public FansManager[] Fanaticos { get; set; } = Array.Empty<FansManager>();//incompleto
+    public List<FansManager> ListaDeFans;
+    public Transform yo;
 }
