@@ -22,7 +22,7 @@ public class PlayerMovement : MonoBehaviour
             float ange = Mathf.SmoothDampAngle(transform.eulerAngles.y,tanangle,ref Velocity, smothTime);
             transform.rotation = Quaternion.Euler(0f, ange, 0f);
             Vector3 Dir=Quaternion.Euler(0f,tanangle,0f)*Vector3.forward;
-            controller.Move(dir*speed*Time.deltaTime);
+            controller.Move(Dir*speed*Time.deltaTime);
         }
     }
 
