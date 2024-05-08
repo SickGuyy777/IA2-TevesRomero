@@ -20,4 +20,5 @@ public class Agent : MonoBehaviour
     [SerializeField] protected List<Agent> _teamAgents = new List<Agent>();
     public List<FansManager> ListaDeFans;
     public Transform yo;
+    public Collider colision;
 }

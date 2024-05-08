@@ -117,27 +117,14 @@ public class YellowAgent : Agent
     //no usa linq la region de abajo
     #region cambio de papeles 
 
-    private void CambiarPapeles(YellowAgent otroAgente)
+    public void CambiarPapeles(YellowAgent otroAgente)
     {
         ImSpot = false;
         otroAgente.ImSpot = true;
     }
-    
-    private void OnCollisionEnter(Collision collision)
-    {
-        YellowAgent otroAgente = collision.gameObject.GetComponent<YellowAgent>();
 
-        if (otroAgente != null)
-        {
-            if (ImSpot && !otroAgente.ImSpot)
-            {
-                CambiarPapeles(otroAgente);
-            }
-        }
-    }
+    #endregion
 
-    #endregion   
- 
     Vector3 Persuit()
     {
         Vector3 desired = Vector3.zero;
@@ -156,8 +143,6 @@ public class YellowAgent : Agent
     {
         Gizmos.color = Color.grey;
         Gizmos.DrawWireSphere(transform.position, viewRange);
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, rangeSpot);
         YellowAgent objetoMasCercano = EncontrarObjetoMasCercano();
         if (objetoMasCercano != null && ImSpot==true)
         {
